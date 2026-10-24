@@ -1,6 +1,9 @@
 // imgs
 import perfil from "./imgs/perfil.jpeg";
 
+// Analitycs
+import { Analytics } from '@vercel/analytics/next';
+
 import "./App.css";
 
 function App() {
@@ -264,6 +267,8 @@ function App() {
           Fale comigo no WhatsApp
         </span>
       </a>
+
+      <Analytics />
     </>
   );
 }

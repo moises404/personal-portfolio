@@ -2,7 +2,7 @@
 import perfil from "./imgs/perfil.jpeg";
 
 // Analitycs
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from "@vercel/analytics/react"
 
 import "./App.css";
 

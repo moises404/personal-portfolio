@@ -7,6 +7,16 @@ import { Analytics } from "@vercel/analytics/react"
 import "./App.css";
 
 function App() {
+
+  const handleWhatsappClick = () => {
+  if (window.dataLayer) {
+    window.dataLayer.push({
+      event: 'clique_whatsapp',
+    });
+  }
+};
+
+
   return (
     <>
       {/* Home */}
@@ -36,6 +46,7 @@ function App() {
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm border border-zinc-600 rounded-full px-4 py-1.5 cursor-pointer hover:border-[#25D366] hover:text-[#25D366] transition-all duration-200 bg-zinc-800/50"
+              onClick={handleWhatsappClick}
             >
               <i className="fa-brands fa-whatsapp text-base"></i>
               <span>WhatsApp</span>
@@ -56,6 +67,7 @@ function App() {
               href="https://wa.me/5584996230097?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20a%20cria%C3%A7%C3%A3o%20de%20sites!"
               target="_blank"
               className="inline-block bg-[#C2A76D] text-zinc-950 font-bold py-3.5 px-8 rounded-xl shadow-lg hover:bg-[#b0945b] hover:scale-105 transition-all duration-200"
+              onClick={handleWhatsappClick}
             >
               Vamos conversar sobre seu projeto
             </a>
@@ -194,6 +206,7 @@ function App() {
                 href="https://wa.me/5584996230097?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20a%20cria%C3%A7%C3%A3o%20de%20sites!"
                 target="_blank"
                 className="bg-white text-center text-[#C2A76D] font-bold py-3 px-6 rounded-lg shadow-md hover:bg-amber-50 transition-all duration-200"
+                onClick={handleWhatsappClick}
               >
                 Vamos conversar sobre seu projeto
               </a>
@@ -222,6 +235,7 @@ function App() {
             rel="noopener noreferrer"
             aria-label="WhatsApp"
             className="flex items-center justify-center w-9 h-9 border border-zinc-700 rounded-full hover:border-[#25D366] hover:text-[#25D366] transition-all duration-200"
+            onClick={handleWhatsappClick}
           >
             <i className="fa-brands fa-whatsapp text-lg"></i>
           </a>
@@ -259,6 +273,7 @@ function App() {
         rel="noopener noreferrer"
         aria-label="Falar no WhatsApp"
         className="fixed bottom-5 right-5 z-50 flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-[#25D366] text-white rounded-full shadow-2xl hover:bg-[#20ba5a] hover:scale-110 transition-all duration-300 group"
+        onClick={handleWhatsappClick}
       >
         <i className="fa-brands fa-whatsapp text-3xl md:text-4xl group-hover:rotate-12 transition-transform duration-300"></i>
 

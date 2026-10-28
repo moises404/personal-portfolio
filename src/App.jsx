@@ -1,9 +1,13 @@
 // imgs
 import perfil from "./imgs/perfil.jpeg";
 
-// Analitycs
+// Analitycs vercel
 import { Analytics } from "@vercel/analytics/react"
 
+// Components
+import { CookieBanner } from "./components/CookieBanner";
+
+// CSS
 import "./App.css";
 
 function App() {
@@ -282,6 +286,9 @@ function App() {
           Fale comigo no WhatsApp
         </span>
       </a>
+          
+      
+      <CookieBanner />
 
       <Analytics />
     </>

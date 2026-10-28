@@ -1,7 +1,27 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
-    <!-- GA4 -->
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 1. Consent Mode v2 - Bloqueia o Analytics por padrão (LGPD) -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+
+      // Verifica se o usuário já havia aceito anteriormente
+      var hasConsent = localStorage.getItem("cookie_consent") === "granted";
+
+      gtag('consent', 'default', {
+        'ad_storage': hasConsent ? 'granted' : 'denied',
+        'analytics_storage': hasConsent ? 'granted' : 'denied',
+        'ad_user_data': hasConsent ? 'granted' : 'denied',
+        'ad_personalization': hasConsent ? 'granted' : 'denied'
+      });
+    </script>
+
+    <!-- 2. Google Tag Manager -->
     <script>
       (function (w, d, s, l, i) {
         w[l] = w[l] || [];
@@ -14,10 +34,8 @@
         f.parentNode.insertBefore(j, f);
       })(window, document, "script", "dataLayer", "GTM-MQLXDTNQ");
     </script>
-    <!--  -->
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- End Google Tag Manager -->
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.css"
@@ -25,21 +43,21 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <title>portf</title>
+    <title>Portfólio</title>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-
     <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
+    <noscript>
+      <iframe
         src="https://www.googletagmanager.com/ns.html?id=GTM-MQLXDTNQ"
         height="0"
         width="0"
         style="display: none; visibility: hidden"
-      ></iframe
-    ></noscript>
+      ></iframe>
+    </noscript>
     <!-- End Google Tag Manager (noscript) -->
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

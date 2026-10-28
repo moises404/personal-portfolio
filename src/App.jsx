@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/react"
 
 // Components
 import { CookieBanner } from "./components/CookieBanner";
+import { MyFooter } from './components/MyFooter'
 
 // CSS
 import "./App.css";
@@ -220,55 +221,7 @@ function App() {
       </section>
 
       {/* Footer */}
-      <footer className="w-full bg-[#262626] border-t border-zinc-800 py-8 px-4 flex flex-col items-center justify-center gap-4 text-white">
-        {/* Nome / Marca */}
-        <div className="text-center">
-          <p className="font-semibold text-base tracking-wide">
-            Moisés Azevedo Bezerra
-          </p>
-          <p className="text-xs text-zinc-400 mt-1">
-            Desenvolvedor Web Front-End
-          </p>
-        </div>
-
-        {/* Redes e Contato */}
-        <div className="flex items-center gap-3">
-          <a
-            href="https://wa.me/5584996230097?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20a%20cria%C3%A7%C3%A3o%20de%20sites!"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="WhatsApp"
-            className="flex items-center justify-center w-9 h-9 border border-zinc-700 rounded-full hover:border-[#25D366] hover:text-[#25D366] transition-all duration-200"
-            onClick={handleWhatsappClick}
-          >
-            <i className="fa-brands fa-whatsapp text-lg"></i>
-          </a>
-
-          <a
-            href="mailto:moisesdev082@gmail.com"
-            target="_blank"
-            aria-label="E-mail"
-            className="flex items-center justify-center w-9 h-9 border border-zinc-700 rounded-full hover:border-[#4285f4] hover:text-[#4285f4] transition-all duration-200"
-          >
-            <i className="fa-regular fa-envelope text-base"></i>
-          </a>
-
-          {/* <a 
-      href="https://linkedin.com/in/seuperfil" 
-      target="_blank" 
-      rel="noopener noreferrer"
-      aria-label="LinkedIn"
-      className="flex items-center justify-center w-9 h-9 border border-zinc-700 rounded-full hover:border-[#0a66c2] hover:text-[#0a66c2] transition-all duration-200"
-    >
-      <i className="fa-brands fa-linkedin-in text-base"></i>
-    </a> */}
-        </div>
-
-        {/* Copyright */}
-        <p className="text-xs text-zinc-500 pt-2 border-t border-zinc-800/60 w-full max-w-xs text-center">
-          © {new Date().getFullYear()} Todos os direitos reservados.
-        </p>
-      </footer>
+      <MyFooter />
 
       {/* WhatsApp Floating Button */}
       <a

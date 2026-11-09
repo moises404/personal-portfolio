@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/react"
 // Components
 import { CookieBanner } from "./components/CookieBanner";
 import { MyFooter } from './components/MyFooter'
+import MyTags from "./components/MyTags";
 
 // CSS
 import "./App.css";
@@ -17,7 +18,7 @@ function App() {
   if (window.dataLayer) {
     window.dataLayer.push({
       event: 'clique_whatsapp',
-    });
+    }); 
   }
 };
 
@@ -32,6 +33,13 @@ function App() {
             {/* Insira sua tag <img> aqui quando tiver a foto */}
             <img src={perfil} alt="Foto de perfil" />
           </div>
+
+          <div className="flex flex-wrap justify-center gap-2">
+            <MyTags icon={(<i class="fa-solid fa-code"></i>)} role="Desenvolvedor" className=""/>
+            <MyTags icon={(<i class="fa-solid fa-globe"></i>)} role="web" />
+          </div>
+          
+
 
           {/* Título Principal */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-wide leading-tight">

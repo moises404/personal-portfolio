@@ -1,5 +1,11 @@
+// React
+import { useCallback, useEffect, useRef, useState } from "react";
+
 // imgs
 import perfil from "./imgs/perfil.jpeg";
+
+// Motion
+import { motion } from "motion/react";
 
 // Analytics vercel
 import { Analytics } from "@vercel/analytics/react";
@@ -12,7 +18,40 @@ import MyTags from "./components/MyTags";
 // CSS
 import "./App.css";
 
+const fadeInUp = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: "some" },
+  transition: { duration: 0.55, ease: "easeOut" },
+};
+
 function App() {
+  const [isReady, setIsReady] = useState(false);
+  const loaderImgRef = useRef(null);
+  const finishedRef = useRef(false);
+
+  const markReady = useCallback(() => {
+    if (finishedRef.current) return;
+    finishedRef.current = true;
+    setIsReady(true);
+  }, []);
+
+  const handleImageLoaded = useCallback(() => {
+    const imgEl = loaderImgRef.current;
+    if (imgEl && typeof imgEl.decode === "function") {
+      imgEl.decode().then(markReady).catch(markReady);
+    } else {
+      markReady();
+    }
+  }, [markReady]);
+
+  useEffect(() => {
+    const imgEl = loaderImgRef.current;
+    if (imgEl && imgEl.complete) {
+      handleImageLoaded();
+    }
+  }, [handleImageLoaded]);
+
   const handleWhatsappClick = () => {
     if (window.dataLayer) {
       window.dataLayer.push({
@@ -24,6 +63,28 @@ function App() {
   const whatsappUrl =
     "https://wa.me/5584996230097?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20a%20cria%C3%A7%C3%A3o%20de%20sites!";
 
+  if (!isReady) {
+    return (
+      <div className="min-h-screen w-full bg-[#141414] flex flex-col items-center justify-center gap-4 text-zinc-300">
+        <img
+          ref={loaderImgRef}
+          src={perfil}
+          alt=""
+          aria-hidden="true"
+          loading="eager"
+          decoding="sync"
+          onLoad={handleImageLoaded}
+          onError={markReady}
+          className="w-1 h-1 opacity-0 pointer-events-none fixed -top-10 -left-10"
+        />
+        <div className="w-10 h-10 rounded-full border-2 border-zinc-800 border-t-[#C2A76D] animate-spin" />
+        <p className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+          Seja bem-vindo!
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-[#141414] text-zinc-100 selection:bg-[#C2A76D] selection:text-zinc-950 font-sans">
       {/* ================= HERO SECTION ================= */}
@@ -31,13 +92,20 @@ function App() {
         {/* Luz de fundo sutil (Glow) para dar profundidade sem poluir */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#C2A76D]/10 rounded-full blur-[120px] pointer-events-none" />
 
-        <div className="relative z-10 w-full max-w-4xl md:border-x border-zinc-800/80 px-6 md:px-12 flex flex-col items-center text-center space-y-6">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, ease: "easeOut" }}
+          className="relative z-10 w-full max-w-4xl md:border-x border-zinc-800/80 px-6 md:px-12 flex flex-col items-center text-center space-y-6"
+        >
           {/* Foto de Perfil / Avatar */}
           <div className="relative group">
             <div className="w-36 h-36 md:w-44 md:h-44 border-2 border-[#C2A76D] p-1 rounded-full shadow-2xl bg-zinc-900">
               <img
                 src={perfil}
                 alt="Foto de perfil de Moisés"
+                decoding="sync"
+                loading="eager"
                 className="w-full h-full object-cover rounded-full"
               />
             </div>
@@ -99,7 +167,7 @@ function App() {
               <i className="fa-solid fa-arrow-right text-sm"></i>
             </a>
           </div>
-        </div>
+        </motion.div>
 
         {/* Indicador de Rolar para Baixo */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-zinc-500 hover:text-[#C2A76D] transition-colors animate-bounce">
@@ -115,17 +183,23 @@ function App() {
         className="w-full py-20 px-4 bg-[#19191B] border-y border-zinc-800/80 flex flex-col items-center"
       >
         <div className="w-full max-w-6xl flex flex-col items-center">
-          <span className="text-xs uppercase tracking-[0.2em] text-[#C2A76D] font-semibold mb-2">
-            Soluções Digitais
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-12 text-center">
-            O que ofereço?
-          </h2>
+          <motion.div {...fadeInUp} className="flex flex-col items-center">
+            <span className="text-xs uppercase tracking-[0.2em] text-[#C2A76D] font-semibold mb-2">
+              Soluções Digitais
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-12 text-center">
+              O que ofereço?
+            </h2>
+          </motion.div>
 
-          {/* Grid responsivo corrigido (3 colunas no desktop, 1 no mobile) */}
+          {/* Grid responsivo */}
           <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Card 1 */}
-            <div className="group p-8 flex flex-col justify-between bg-[#202023] border border-zinc-800 hover:border-[#C2A76D]/50 rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <motion.div
+              {...fadeInUp}
+              transition={{ duration: 0.5, delay: 0, ease: "easeOut" }}
+              className="group p-8 flex flex-col justify-between bg-[#202023] border border-zinc-800 hover:border-[#C2A76D]/50 rounded-2xl shadow-xl transition-colors duration-300"
+            >
               <div>
                 <div className="w-12 h-12 rounded-xl bg-[#C2A76D]/10 border border-[#C2A76D]/20 flex items-center justify-center text-[#C2A76D] mb-6 group-hover:scale-110 transition-transform">
                   <i className="fa-solid fa-laptop-code text-xl"></i>
@@ -148,10 +222,14 @@ function App() {
                   </li>
                 </ul>
               </div>
-            </div>
+            </motion.div>
 
             {/* Card 2 */}
-            <div className="group p-8 flex flex-col justify-between bg-[#202023] border border-zinc-800 hover:border-[#C2A76D]/50 rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <motion.div
+              {...fadeInUp}
+              transition={{ duration: 0.5, delay: 0.12, ease: "easeOut" }}
+              className="group p-8 flex flex-col justify-between bg-[#202023] border border-zinc-800 hover:border-[#C2A76D]/50 rounded-2xl shadow-xl transition-colors duration-300"
+            >
               <div>
                 <div className="w-12 h-12 rounded-xl bg-[#C2A76D]/10 border border-[#C2A76D]/20 flex items-center justify-center text-[#C2A76D] mb-6 group-hover:scale-110 transition-transform">
                   <i className="fa-solid fa-shield-halved text-xl"></i>
@@ -166,7 +244,7 @@ function App() {
                   </li>
                   <li className="flex items-start gap-2.5">
                     <span className="text-[#C2A76D] font-bold mt-0.5">✓</span>
-                    <span>Backups e segurança</span>
+                    <span>Backups automáticos e de segurança</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <span className="text-[#C2A76D] font-bold mt-0.5">✓</span>
@@ -174,10 +252,14 @@ function App() {
                   </li>
                 </ul>
               </div>
-            </div>
+            </motion.div>
 
             {/* Card 3 */}
-            <div className="group p-8 flex flex-col justify-between bg-[#202023] border border-zinc-800 hover:border-[#C2A76D]/50 rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <motion.div
+              {...fadeInUp}
+              transition={{ duration: 0.5, delay: 0.24, ease: "easeOut" }}
+              className="group p-8 flex flex-col justify-between bg-[#202023] border border-zinc-800 hover:border-[#C2A76D]/50 rounded-2xl shadow-xl transition-colors duration-300"
+            >
               <div>
                 <div className="w-12 h-12 rounded-xl bg-[#C2A76D]/10 border border-[#C2A76D]/20 flex items-center justify-center text-[#C2A76D] mb-6 group-hover:scale-110 transition-transform">
                   <i className="fa-solid fa-screwdriver-wrench text-xl"></i>
@@ -200,7 +282,7 @@ function App() {
                   </li>
                 </ul>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -211,15 +293,21 @@ function App() {
         <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#6f1b44]/15 rounded-full blur-[130px] pointer-events-none" />
 
         <div className="relative z-10 w-full max-w-3xl flex flex-col items-center">
-          <span className="text-xs uppercase tracking-[0.2em] text-[#C2A76D] font-semibold mb-2">
-            Sobre Mim
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-10 text-center">
-            Quem você está contratando?
-          </h2>
+          <motion.div {...fadeInUp} className="flex flex-col items-center">
+            <span className="text-xs uppercase tracking-[0.2em] text-[#C2A76D] font-semibold mb-2">
+              Sobre Mim
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-10 text-center">
+              Quem você está contratando?
+            </h2>
+          </motion.div>
 
           {/* Card de Apresentação */}
-          <div className="bg-[#1C1C1F] border border-zinc-800/90 p-8 md:p-10 rounded-2xl shadow-2xl w-full text-left space-y-5">
+          <motion.div
+            {...fadeInUp}
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+            className="bg-[#1C1C1F] border border-zinc-800/90 p-8 md:p-10 rounded-2xl shadow-2xl w-full text-left space-y-5"
+          >
             <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
               <h3 className="text-2xl font-bold text-white">
                 Prazer, sou o <span className="text-[#C2A76D]">Moisés</span>! 👋
@@ -235,7 +323,13 @@ function App() {
             </p>
 
             <p className="text-base md:text-lg leading-relaxed text-zinc-400">
-              Com formação técnica pelo <strong className="text-zinc-200 font-medium">IFRN</strong> e cursando Tecnologia da Informação na <strong className="text-zinc-200 font-medium">UFRN</strong>, uno conhecimento acadêmico com as tecnologias mais modernas do mercado (como React e Tailwind) para transformar a visão da sua marca em uma presença digital viva.
+              Com formação técnica pelo{" "}
+              <strong className="text-zinc-200 font-medium">IFRN</strong> e
+              cursando Tecnologia da Informação na{" "}
+              <strong className="text-zinc-200 font-medium">UFRN</strong>, uno
+              conhecimento acadêmico com as tecnologias mais modernas do mercado
+              (como React e Tailwind) para transformar a visão da sua marca em
+              uma presença digital viva.
             </p>
 
             <p className="text-base md:text-lg leading-relaxed text-zinc-400">
@@ -259,15 +353,20 @@ function App() {
                 Solicitar um orçamento
               </a>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <MyFooter />
+      <motion.div {...fadeInUp}>
+        <MyFooter />
+      </motion.div>
 
       {/* WhatsApp Floating Button */}
-      <a
+      <motion.a
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, delay: 0.5, ease: "easeOut" }}
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
@@ -280,7 +379,7 @@ function App() {
         <span className="absolute right-16 bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap shadow-xl hidden sm:block pointer-events-none">
           Fale comigo no WhatsApp
         </span>
-      </a>
+      </motion.a>
 
       <CookieBanner />
       <Analytics />
